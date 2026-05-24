@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINTV – Live Sports Streaming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #050d1a;
+    --navy2: #091628;
+    --navy3: #0d1f3c;
+    --navy4: #122548;
+    --gold: #f0b429;
+    --gold2: #ffd166;
+    --electric: #00b4ff;
+    --electric2: #38d5ff;
+    --red: #ff2d4a;
+    --red2: #ff5566;
+    --card-bg: rgba(10, 22, 45, 0.85);
+    --glass: rgba(255,255,255,0.05);
+    --glass2: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(0,180,255,0.15);
+    --text: #e8f4ff;
+    --text2: #8aacc8;
+    --text3: #4d6e8a;
+    --r20: 20px;
+    --r12: 12px;
+    --r8: 8px;
+    --r50: 50px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,90,200,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 85% 20%, rgba(240,180,41,0.06) 0%, transparent 50%);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--navy2); }
+  ::-webkit-scrollbar-thumb { background: var(--navy4); border-radius: 4px; }
+
+  /* ─── NAVBAR ─── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 32px;
+    height: 64px;
+    background: rgba(5,13,26,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-mark {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--gold) 0%, #e08f00 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    box-shadow: 0 0 16px rgba(240,180,41,0.35);
+  }
+  .logo-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+  .logo-name span { color: var(--gold); }
+
+  .search-wrap {
+    flex: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    width: 16px; height: 16px;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--r50);
+    padding: 9px 16px 9px 40px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .search-input::placeholder { color: var(--text3); }
+  .search-input:focus {
+    border-color: var(--border2);
+    background: var(--glass2);
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--r50);
+    padding: 7px 16px;
+    color: var(--text2);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-btn:hover { background: var(--glass2); color: var(--text); }
+  .nav-btn.primary {
+    background: linear-gradient(135deg, var(--gold) 0%, #d4950a 100%);
+    border-color: transparent;
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .nav-btn.primary:hover { filter: brightness(1.1); }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--electric) 0%, #0070cc 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    color: white;
+    cursor: pointer;
+    border: 2px solid var(--border2);
+  }
+
+  /* ─── HERO BANNER ─── */
+  .hero {
+    position: relative;
+    margin: 0 32px 28px;
+    margin-top: 24px;
+    border-radius: var(--r20);
+    overflow: hidden;
+    height: 220px;
+    background:
+      linear-gradient(110deg, rgba(5,13,26,0.92) 0%, rgba(5,13,26,0.5) 50%, transparent 100%),
+      linear-gradient(135deg, #0a1628 0%, #0d2a4a 40%, #0a1e38 100%);
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(0,180,255,0.03) 0px, rgba(0,180,255,0.03) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(-45deg, rgba(0,180,255,0.03) 0px, rgba(0,180,255,0.03) 1px, transparent 1px, transparent 40px);
+  }
+  .hero-glow {
+    position: absolute;
+    right: 80px; top: 50%;
+    transform: translateY(-50%);
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,180,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 32px 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,45,74,0.15);
+    border: 1px solid rgba(255,45,74,0.4);
+    border-radius: var(--r50);
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    width: fit-content;
+  }
+  .pulse-dot {
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  .hero-actions { display: flex; gap: 10px; }
+  .btn-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--electric) 0%, #007acc 100%);
+    border: none;
+    border-radius: var(--r50);
+    padding: 10px 22px;
+    color: white;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-shadow: none;
+    box-shadow: 0 0 20px rgba(0,180,255,0.3);
+  }
+  .btn-watch:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn-schedule {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--r50);
+    padding: 10px 22px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-schedule:hover { background: var(--glass2); border-color: var(--border2); }
+
+  /* ─── SECTION HEADER ─── */
+  .section {
+    padding: 0 32px;
+    margin-bottom: 28px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 18px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--electric) 100%);
+    border-radius: 2px;
+  }
+  .section-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--electric);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .section-link:hover { opacity: 1; }
+
+  /* ─── CATEGORY TABS ─── */
+  .cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat {
+    flex-shrink: 0;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--r50);
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .cat:hover { background: var(--glass2); color: var(--text); border-color: rgba(255,255,255,0.12); }
+  .cat.active {
+    background: linear-gradient(135deg, rgba(0,180,255,0.18) 0%, rgba(0,100,200,0.12) 100%);
+    border-color: rgba(0,180,255,0.35);
+    color: var(--electric2);
+  }
+  .cat-icon { font-size: 14px; }
+
+  /* ─── LIVE STREAM CARDS ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 18px;
+  }
+
+  .stream-card {
+    position: relative;
+    border-radius: var(--r20);
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), box-shadow 0.28s ease, border-color 0.28s ease;
+    aspect-ratio: 16/10;
+  }
+  .stream-card:hover {
+    transform: translateY(-5px) scale(1.012);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,180,255,0.2);
+    border-color: rgba(0,180,255,0.25);
+  }
+
+  /* Card BG themed gradients */
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .card-bg-football { background: linear-gradient(135deg, #0a2d0a 0%, #0d4a1a 40%, #1a6b30 60%, #0a2d0a 100%); }
+  .card-bg-football2 { background: linear-gradient(135deg, #1a0040 0%, #3d008a 40%, #5500cc 60%, #1a0040 100%); }
+  .card-bg-baseball { background: linear-gradient(135deg, #1a0a00 0%, #4a1a00 40%, #7a2d00 60%, #1a0a00 100%); }
+  .card-bg-hockey { background: linear-gradient(135deg, #001a3d 0%, #003380 40%, #0055cc 60%, #001a3d 100%); }
+  .card-bg-f1 { background: linear-gradient(135deg, #1a0000 0%, #4a0000 40%, #8a0010 60%, #1a0000 100%); }
+  .card-bg-tennis { background: linear-gradient(135deg, #0a1a00 0%, #1a3d00 40%, #2d6600 60%, #0a1a00 100%); }
+
+  .card-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: repeating-linear-gradient(
+      45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px,
+      transparent 1px, transparent 20px
+    );
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(5,13,26,0.1) 0%,
+      rgba(5,13,26,0.2) 40%,
+      rgba(5,13,26,0.85) 80%,
+      rgba(5,13,26,0.97) 100%
+    );
+  }
+
+  /* Card top badges */
+  .card-top {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 3;
+  }
+  .badge-live {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--red);
+    border-radius: var(--r50);
+    padding: 4px 10px;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 12px rgba(255,45,74,0.5);
+    animation: live-glow 2s ease-in-out infinite;
+  }
+  @keyframes live-glow {
+    0%, 100% { box-shadow: 0 2px 12px rgba(255,45,74,0.5); }
+    50% { box-shadow: 0 2px 20px rgba(255,45,74,0.8); }
+  }
+  .badge-live .pulse-dot { width: 5px; height: 5px; }
+
+  .badge-sport {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r8);
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .viewers {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r50);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .viewers-dot { width: 5px; height: 5px; background: var(--electric); border-radius: 50%; }
+
+  /* VS section */
+  .card-vs {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    max-width: 100px;
+  }
+  .team-crest {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+    font-family: 'Barlow Condensed', sans-serif;
+    border: 2px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+    color: white;
+    letter-spacing: -1px;
+  }
+  .stream-card:hover .team-crest { transform: scale(1.08); }
+  .team-short {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .vs-badge {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  /* Card bottom */
+  .card-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 14px 16px;
+    z-index: 3;
+  }
+  .card-match-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 0.3px;
+    line-height: 1.15;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    color: var(--text3);
+  }
+  .card-meta-dot {
+    width: 2px; height: 2px;
+    background: var(--text3);
+    border-radius: 50%;
+  }
+  .card-league {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  /* Hover play overlay */
+  .card-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .stream-card:hover .card-play { opacity: 1; }
+  .play-btn {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(0,180,255,0.9);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px rgba(0,180,255,0.6);
+    transition: transform 0.2s;
+  }
+  .play-btn:hover { transform: scale(1.1); }
+  .play-btn svg { width: 20px; height: 20px; fill: white; margin-left: 3px; }
+
+  /* ─── BOTTOM NAV ─── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(9,22,40,0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r50);
+    padding: 8px 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,180,255,0.06);
+    white-space: nowrap;
+  }
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--r50);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .nav-pill:hover { color: var(--text); background: var(--glass); }
+  .nav-pill.active {
+    background: linear-gradient(135deg, rgba(0,180,255,0.2) 0%, rgba(0,100,200,0.15) 100%);
+    border-color: rgba(0,180,255,0.3);
+    color: var(--electric2);
+  }
+  .nav-pill svg { width: 16px; height: 16px; }
+  .nav-sep { width: 1px; height: 24px; background: var(--border); margin: 0 6px; }
+  .nav-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-icon:hover { background: var(--glass2); color: var(--text); border-color: rgba(255,255,255,0.15); }
+  .nav-icon svg { width: 16px; height: 16px; }
+
+  /* ─── FOOTER SPACE ─── */
+  .footer-space { height: 90px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    .navbar { padding: 0 16px; }
+    .hero { margin: 0 16px 20px; height: 180px; }
+    .hero h1 { font-size: 28px; }
+    .section { padding: 0 16px; }
+    .cards-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .nav-btn:not(.primary) { display: none; }
+  }
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="#" class="logo">
+    <div class="logo-mark">B</div>
+    <span class="logo-name">BIN<span>TV</span></span>
+  </a>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input class="search-input" type="text" placeholder="Search teams, events, sports...">
+  </div>
+
+  <div class="nav-right">
+    <a href="#" class="nav-btn">Channels</a>
+    <a href="#" class="nav-btn">My List</a>
+    <a href="#" class="nav-btn primary">Subscribe</a>
+    <div class="avatar">JD</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="pulse-dot"></div> Now Live</div>
+    <h1>Formula 1<br><span>Canadian Grand Prix</span></h1>
+    <p>Circuit Gilles Villeneuve · Montréal · Race Day</p>
+    <div class="hero-actions">
+      <button class="btn-watch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        Watch Live
+      </button>
+      <button class="btn-schedule">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Schedule
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Browse Sports</div>
+  </div>
+  <div class="cats">
+    <div class="cat active"><span class="cat-icon">⚡</span>All Sports</div>
+    <div class="cat"><span class="cat-icon">⚽</span>Football</div>
+    <div class="cat"><span class="cat-icon">🏀</span>Basketball</div>
+    <div class="cat"><span class="cat-icon">⚾</span>Baseball</div>
+    <div class="cat"><span class="cat-icon">🏒</span>Hockey</div>
+    <div class="cat"><span class="cat-icon">🎾</span>Tennis</div>
+    <div class="cat"><span class="cat-icon">🥊</span>Boxing</div>
+    <div class="cat"><span class="cat-icon">🏉</span>Rugby</div>
+    <div class="cat"><span class="cat-icon">🏎️</span>Motorsport</div>
+  </div>
+</div>
+
+<!-- LIVE EVENTS -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Live Now</div>
+    <a href="#" class="section-link">View All →</a>
+  </div>
+  <div class="cards-grid">
+
+    <!-- Card 1: AC Milan vs Cagliari -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-football"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">Serie A</div>
+          <div class="viewers"><div class="viewers-dot"></div>48.2K</div>
+        </div>
+      </div>
+      <div class="card-vs">
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(204,0,0,0.5),rgba(0,0,0,0.5))">ACM</div>
+          <span class="team-short">Milan</span>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(180,0,0,0.4),rgba(0,0,100,0.4))">CAG</div>
+          <span class="team-short">Cagliari</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">AC Milan vs Cagliari</div>
+        <div class="card-meta">
+          <span class="card-league">Serie A</span>
+          <div class="card-meta-dot"></div>
+          <span>63' · 2 – 0</span>
+          <div class="card-meta-dot"></div>
+          <span>San Siro</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Real Madrid vs Olympiacos -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-football2"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">UEFA CL</div>
+          <div class="viewers"><div class="viewers-dot"></div>124.7K</div>
+        </div>
+      </div>
+      <div class="card-vs">
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(240,180,0,0.5),rgba(255,255,255,0.2))">RMA</div>
+          <span class="team-short">Madrid</span>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(200,0,0,0.5),rgba(0,0,0,0.4))">OLY</div>
+          <span class="team-short">Olympiacos</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">Real Madrid vs Olympiacos</div>
+        <div class="card-meta">
+          <span class="card-league">UEFA Champions League</span>
+          <div class="card-meta-dot"></div>
+          <span>38' · 1 – 1</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Card 3: Yankees vs Rays -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-baseball"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">MLB</div>
+          <div class="viewers"><div class="viewers-dot"></div>31.5K</div>
+        </div>
+      </div>
+      <div class="card-vs">
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(0,20,80,0.6),rgba(10,10,60,0.6))">NYY</div>
+          <span class="team-short">Yankees</span>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(0,120,180,0.5),rgba(180,220,0,0.3))">TB</div>
+          <span class="team-short">Rays</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">Yankees vs Rays</div>
+        <div class="card-meta">
+          <span class="card-league">MLB Regular Season</span>
+          <div class="card-meta-dot"></div>
+          <span>7th Inning · 4 – 3</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Card 4: Canada vs Slovakia (Hockey) -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-hockey"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">Ice Hockey</div>
+          <div class="viewers"><div class="viewers-dot"></div>67.3K</div>
+        </div>
+      </div>
+      <div class="card-vs">
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(200,0,0,0.5),rgba(255,255,255,0.15))">CAN</div>
+          <span class="team-short">Canada</span>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(0,80,160,0.5),rgba(255,255,255,0.15))">SVK</div>
+          <span class="team-short">Slovakia</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">Canada vs Slovakia</div>
+        <div class="card-meta">
+          <span class="card-league">IIHF World Championship</span>
+          <div class="card-meta-dot"></div>
+          <span>3rd Period · 3 – 2</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Card 5: F1 Canadian GP -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-f1"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">Formula 1</div>
+          <div class="viewers"><div class="viewers-dot"></div>218.9K</div>
+        </div>
+      </div>
+      <div class="card-vs" style="gap:0">
+        <div style="text-align:center;z-index:3;width:100%">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--red);text-shadow:0 0 30px rgba(255,45,74,0.6);letter-spacing:2px">F1</div>
+          <div style="font-size:12px;color:var(--text2);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Race In Progress</div>
+          <div style="display:flex;justify-content:center;gap:8px;margin-top:8px">
+            <span style="background:rgba(255,45,74,0.2);border:1px solid rgba(255,45,74,0.3);border-radius:6px;padding:3px 10px;font-size:11px;color:#ff8899;font-weight:700">LAP 42/70</span>
+            <span style="background:rgba(240,180,41,0.15);border:1px solid rgba(240,180,41,0.25);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--gold2);font-weight:700">VER P1</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">Canadian Grand Prix</div>
+        <div class="card-meta">
+          <span class="card-league">FIA Formula 1</span>
+          <div class="card-meta-dot"></div>
+          <span>Montréal · Circuit Gilles Villeneuve</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Card 6: Djokovic vs Alcaraz (Tennis) -->
+    <div class="stream-card">
+      <div class="card-bg card-bg-tennis"></div>
+      <div class="card-bg-pattern"></div>
+      <div class="card-overlay"></div>
+      <div class="card-top">
+        <div class="badge-live"><div class="pulse-dot"></div>Live</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div class="badge-sport">Tennis</div>
+          <div class="viewers"><div class="viewers-dot"></div>89.4K</div>
+        </div>
+      </div>
+      <div class="card-vs">
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(0,100,200,0.5),rgba(200,0,0,0.2))">DJO</div>
+          <span class="team-short">Djokovic</span>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-block">
+          <div class="team-crest" style="background:linear-gradient(135deg,rgba(200,50,0,0.5),rgba(255,200,0,0.2))">ALC</div>
+          <span class="team-short">Alcaraz</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-match-name">Djokovic vs Alcaraz</div>
+        <div class="card-meta">
+          <span class="card-league">French Open · QF</span>
+          <div class="card-meta-dot"></div>
+          <span>Set 3 · 6–4, 4–6, 2–3</span>
+        </div>
+      </div>
+      <div class="card-play">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- UP NEXT SECTION -->
+<div class="section" style="margin-bottom:0">
+  <div class="section-head">
+    <div class="section-title">Up Next</div>
+    <a href="#" class="section-link">View Schedule →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">
+
+    <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer" onmouseover="this.style.borderColor='rgba(0,180,255,0.25)';this.style.background='var(--glass2)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--glass)'">
+      <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(0,100,200,0.3),rgba(0,50,100,0.5));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏀</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lakers vs Celtics</div>
+        <div style="font-size:11px;color:var(--text3)">NBA · Game 5 · Finals</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--gold)">20:00</div>
+        <div style="font-size:10px;color:var(--text3)">EST</div>
+      </div>
+    </div>
+
+    <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer" onmouseover="this.style.borderColor='rgba(0,180,255,0.25)';this.style.background='var(--glass2)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--glass)'">
+      <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(200,0,0,0.3),rgba(100,0,0,0.5));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🥊</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Fury vs Usyk II</div>
+        <div style="font-size:11px;color:var(--text3)">Boxing · Heavyweight · Riyadh</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--gold)">21:30</div>
+        <div style="font-size:10px;color:var(--text3)">GMT</div>
+      </div>
+    </div>
+
+    <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer" onmouseover="this.style.borderColor='rgba(0,180,255,0.25)';this.style.background='var(--glass2)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--glass)'">
+      <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(0,150,50,0.3),rgba(0,80,20,0.5));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚽</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Man City vs Arsenal</div>
+        <div style="font-size:11px;color:var(--text3)">EPL · Matchday 37</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--gold)">16:30</div>
+        <div style="font-size:10px;color:var(--text3)">BST</div>
+      </div>
+    </div>
+
+    <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer" onmouseover="this.style.borderColor='rgba(0,180,255,0.25)';this.style.background='var(--glass2)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--glass)'">
+      <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(100,0,200,0.3),rgba(50,0,100,0.5));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏉</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">New Zealand vs South Africa</div>
+        <div style="font-size:11px;color:var(--text3)">Rugby World Cup · Group A</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--gold)">09:00</div>
+        <div style="font-size:10px;color:var(--text3)">NZST</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer-space"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-pill active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+    Live
+  </div>
+  <div class="nav-pill">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Schedule
+  </div>
+  <div class="nav-pill">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+    TV Guide
+  </div>
+  <div class="nav-sep"></div>
+  <div class="nav-icon" title="Discord">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01M15 12h.01M8.5 20a5 5 0 0 1-5-5v-1.5a3.5 3.5 0 0 1 3-3.47V8.5a6 6 0 0 1 12 0v1.53A3.5 3.5 0 0 1 21.5 13.5V15a5 5 0 0 1-5 5h-.5a2 2 0 0 1-4 0H8.5z"/></svg>
+  </div>
+  <div class="nav-icon" title="Share">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  </div>
+  <div class="nav-icon" title="Notifications">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+  </div>
+</div>
+
+<script>
+  // Category tabs toggle
+  document.querySelectorAll('.cat').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+  // Bottom nav toggle
+  document.querySelectorAll('.nav-pill').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+  // Smooth search focus
+  const input = document.querySelector('.search-input');
+  input.addEventListener('focus', () => {
+    input.parentElement.style.filter = 'drop-shadow(0 0 8px rgba(0,180,255,0.2))';
+  });
+  input.addEventListener('blur', () => {
+    input.parentElement.style.filter = '';
+  });
+</script>
+
+</body>
+</html>
