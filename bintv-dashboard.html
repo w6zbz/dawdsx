@@ -1,32 +1,38 @@
-```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linktr Playground</title>
 
-  <title>GSAP Style Landing</title>
-
+  <!-- FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
   <style>
     :root {
-      --color-absolute-zero: #0e100f;
-      --color-frosted-canvas: #fffce1;
-      --color-faded-steel: #7c7c6f;
-      --color-deep-graphite: #42433d;
-      --color-neon-pink: #fec5fb;
-      --color-fiery-orange: #ff8709;
-      --color-shocking-green: #0ae448;
-      --color-digital-violet: #9d95ff;
-      --color-aqua-glow: #00bae2;
-      --color-mint-burst: #abff84;
+      --color-forest-green: #254f1a;
+      --color-chartreuse-pop: #d2e823;
+      --color-hydrangea-blue: #2665d6;
+      --color-dahlia-purple: #502274;
+      --color-currant-red: #780016;
+      --color-lavender-mist: #e9c0e9;
+      --color-iris-blue: #061492;
+      --color-goldenrod: #d6a337;
+      --color-graphite: #1e2330;
+      --color-white: #ffffff;
+      --color-marble: #f3f3f1;
+      --color-lunar-dust: #e8efd6;
+      --color-black: #000000;
 
-      --radius-full: 100px;
-      --radius-default: 8px;
+      --radius-card: 64px;
+      --radius-btn: 99px;
 
-      --font: Inter, system-ui, sans-serif;
+      --container: 1500px;
     }
 
     * {
@@ -40,672 +46,973 @@
     }
 
     body {
-      background: var(--color-absolute-zero);
-      color: var(--color-frosted-canvas);
-      font-family: var(--font);
+      background: var(--color-marble);
+      color: var(--color-black);
+      font-family: "Inter", sans-serif;
       overflow-x: hidden;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    img {
+      max-width: 100%;
+      display: block;
     }
 
     .container {
-      width: min(1400px, 92%);
+      width: min(92%, var(--container));
       margin: auto;
     }
 
-    .noise {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.03;
-      background-image:
-        radial-gradient(circle at 20% 20%, white 1px, transparent 0),
-        radial-gradient(circle at 80% 80%, white 1px, transparent 0);
-      background-size: 4px 4px;
-      z-index: 999;
-    }
-
-    /* ================= NAVBAR ================= */
+    /* =========================
+      NAVBAR
+    ========================== */
 
     nav {
-      position: fixed;
+      position: sticky;
       top: 0;
-      width: 100%;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(14, 16, 15, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      z-index: 1000;
+      padding: 18px 0;
+      backdrop-filter: blur(12px);
+      background: rgba(243,243,241,.72);
     }
 
-    .nav-inner {
-      height: 90px;
+    .nav-wrap {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
     }
 
     .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: 800;
       letter-spacing: -1px;
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
-      color: var(--color-faded-steel);
-      font-size: 0.95rem;
-    }
-
-    .pill-btn {
-      border: 1px solid var(--color-frosted-canvas);
-      padding: 14px 28px;
-      border-radius: var(--radius-full);
-      transition: 0.3s ease;
-      display: inline-flex;
+      gap: 28px;
       align-items: center;
-      gap: 10px;
-      cursor: pointer;
     }
 
-    .pill-btn:hover {
-      background: var(--color-frosted-canvas);
-      color: var(--color-absolute-zero);
+    .nav-links a {
+      text-decoration: none;
+      color: var(--color-black);
+      font-weight: 500;
+      transition: .25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-hydrangea-blue);
       transform: translateY(-2px);
     }
 
-    /* ================= HERO ================= */
+    .nav-actions {
+      display: flex;
+      gap: 14px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: var(--radius-btn);
+      padding: 18px 28px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: .3s;
+    }
+
+    .btn-primary {
+      background: var(--color-chartreuse-pop);
+      color: var(--color-black);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+
+    .btn-dark {
+      background: var(--color-black);
+      color: white;
+    }
+
+    /* =========================
+      HERO
+    ========================== */
 
     .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
+      padding: 80px 0 40px;
       position: relative;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
       align-items: center;
-      gap: 4rem;
     }
 
-    .hero-subtitle {
-      color: var(--color-faded-steel);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 2rem;
-      font-size: 0.85rem;
-    }
-
-    .hero-title {
-      font-size: clamp(4rem, 12vw, 11rem);
-      line-height: 0.9;
-      letter-spacing: -7px;
-      font-weight: 700;
-    }
-
-    .hero-title span {
-      color: var(--color-shocking-green);
-    }
-
-    .hero-desc {
-      margin-top: 2rem;
-      color: var(--color-faded-steel);
-      font-size: 1.2rem;
-      max-width: 600px;
-      line-height: 1.7;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 3rem;
-    }
-
-    .secondary-btn {
-      color: var(--color-faded-steel);
-      display: flex;
-      align-items: center;
-      padding: 14px 0;
-    }
-
-    /* ================= HERO VISUAL ================= */
-
-    .hero-visual {
-      position: relative;
-      height: 700px;
-    }
-
-    .floating-card {
-      position: absolute;
-      border-radius: var(--radius-default);
-      border: 2px solid;
-      padding: 1.5rem;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.02);
-      transition: 0.4s ease;
-    }
-
-    .floating-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .card-1 {
-      width: 280px;
-      top: 40px;
-      left: 30px;
-      border-color: var(--color-neon-pink);
-    }
-
-    .card-2 {
-      width: 320px;
-      top: 250px;
-      right: 0;
-      border-color: var(--color-fiery-orange);
-    }
-
-    .card-3 {
-      width: 260px;
-      bottom: 50px;
-      left: 100px;
-      border-color: var(--color-digital-violet);
-    }
-
-    .floating-card h3 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      letter-spacing: -1px;
-    }
-
-    .floating-card p {
-      color: var(--color-faded-steel);
-      line-height: 1.6;
-    }
-
-    /* ================= FEATURES ================= */
-
-    .section {
-      padding: 140px 0;
-    }
-
-    .section-heading {
-      font-size: clamp(3rem, 6vw, 5rem);
-      line-height: 1;
-      letter-spacing: -3px;
-      max-width: 900px;
-    }
-
-    .section-heading span {
-      color: var(--color-aqua-glow);
-    }
-
-    .features-grid {
-      margin-top: 5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .feature-card {
-      border: 2px solid;
-      border-radius: var(--radius-default);
-      padding: 2rem;
-      min-height: 280px;
-      position: relative;
-      overflow: hidden;
-      transition: 0.4s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-8px);
-    }
-
-    .feature-card:nth-child(1) {
-      border-color: var(--color-neon-pink);
-    }
-
-    .feature-card:nth-child(2) {
-      border-color: var(--color-fiery-orange);
-    }
-
-    .feature-card:nth-child(3) {
-      border-color: var(--color-digital-violet);
-    }
-
-    .feature-card:nth-child(4) {
-      border-color: var(--color-shocking-green);
-    }
-
-    .feature-number {
-      font-size: 0.9rem;
-      color: var(--color-faded-steel);
-      margin-bottom: 2rem;
-    }
-
-    .feature-title {
-      font-size: 2rem;
-      letter-spacing: -1px;
-      margin-bottom: 1rem;
-    }
-
-    .feature-desc {
-      color: var(--color-faded-steel);
-      line-height: 1.7;
-    }
-
-    /* ================= SHOWCASE ================= */
-
-    .showcase {
-      position: relative;
-    }
-
-    .showcase-box {
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 4rem;
-      overflow: hidden;
-      position: relative;
-      min-height: 500px;
-    }
-
-    .gradient-circle {
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle,
-        rgba(10,228,72,0.25) 0%,
-        rgba(10,228,72,0) 70%);
-      position: absolute;
-      top: -150px;
-      right: -100px;
-      animation: pulse 6s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%,100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.2);
-      }
-    }
-
-    .showcase-title {
-      font-size: clamp(4rem, 10vw, 9rem);
-      line-height: 0.9;
-      letter-spacing: -5px;
+    .hero-left {
       position: relative;
       z-index: 2;
     }
 
-    .showcase-title span {
-      color: var(--color-neon-pink);
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: white;
+      border: 2px solid black;
+      margin-bottom: 28px;
+      font-weight: 700;
     }
 
-    /* ================= FOOTER ================= */
-
-    footer {
-      padding: 80px 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
+    .hero h1 {
+      font-size: clamp(54px, 7vw, 108px);
+      line-height: .92;
+      letter-spacing: -4px;
+      margin-bottom: 24px;
+      font-weight: 800;
     }
 
-    .footer-inner {
+    .hero p {
+      max-width: 620px;
+      font-size: 20px;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .hero-right {
+      position: relative;
+      height: 720px;
+    }
+
+    /* Floating blobs */
+
+    .blob {
+      position: absolute;
+      border-radius: 1000px;
+      filter: blur(0px);
+    }
+
+    .blob-1 {
+      width: 320px;
+      height: 320px;
+      background: var(--color-chartreuse-pop);
+      top: 0;
+      right: 40px;
+    }
+
+    .blob-2 {
+      width: 220px;
+      height: 220px;
+      background: var(--color-hydrangea-blue);
+      bottom: 120px;
+      left: 20px;
+    }
+
+    .blob-3 {
+      width: 180px;
+      height: 180px;
+      background: var(--color-lavender-mist);
+      top: 280px;
+      right: 0;
+    }
+
+    .profile-card {
+      position: absolute;
+      inset: 80px 80px 80px 80px;
+      background: white;
+      border-radius: 56px;
+      padding: 28px;
+      border: 3px solid black;
+      overflow: hidden;
+    }
+
+    .profile-top {
+      background: var(--color-hydrangea-blue);
+      height: 260px;
+      border-radius: 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: white;
+      position: absolute;
+      left: 50%;
+      bottom: -70px;
+      transform: translateX(-50%);
+      border: 6px solid black;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-content {
+      padding-top: 90px;
+      text-align: center;
+    }
+
+    .profile-content h3 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .profile-content p {
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link-card {
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 2rem;
+      align-items: center;
+      background: var(--color-lunar-dust);
+      border-radius: 999px;
+      padding: 18px 22px;
+      transition: .25s;
+      cursor: pointer;
+      border: 2px solid transparent;
     }
 
-    .footer-left h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+    .link-card:hover {
+      transform: scale(1.02);
+      border-color: black;
     }
 
-    .footer-left p {
-      color: var(--color-faded-steel);
-      max-width: 400px;
-      line-height: 1.7;
+    /* =========================
+      FEATURES
+    ========================== */
+
+    section {
+      padding: 90px 0;
     }
 
-    .footer-links {
+    .section-head {
       display: flex;
-      gap: 4rem;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 50px;
     }
 
-    .footer-column h4 {
-      margin-bottom: 1rem;
+    .section-head h2 {
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: .95;
+      letter-spacing: -3px;
+      max-width: 700px;
     }
 
-    .footer-column a {
-      display: block;
-      margin-bottom: 0.7rem;
-      color: var(--color-faded-steel);
-      transition: 0.3s;
+    .section-head p {
+      max-width: 500px;
+      line-height: 1.7;
+      font-size: 18px;
     }
 
-    .footer-column a:hover {
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      padding: 36px;
+      border-radius: var(--radius-card);
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:nth-child(1) {
+      background: var(--color-forest-green);
       color: white;
     }
 
-    /* ================= RESPONSIVE ================= */
+    .feature-card:nth-child(2) {
+      background: var(--color-goldenrod);
+    }
 
-    @media (max-width: 980px) {
-      .hero-grid {
+    .feature-card:nth-child(3) {
+      background: var(--color-iris-blue);
+      color: white;
+    }
+
+    .feature-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      margin-bottom: 28px;
+    }
+
+    .feature-card h3 {
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .feature-card p {
+      line-height: 1.8;
+      font-size: 17px;
+      opacity: .9;
+    }
+
+    .feature-deco {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 1000px;
+      background: rgba(255,255,255,.08);
+      right: -60px;
+      bottom: -60px;
+    }
+
+    /* =========================
+      SHOWCASE
+    ========================== */
+
+    .showcase {
+      background: var(--color-hydrangea-blue);
+      border-radius: 90px;
+      color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+      padding: 80px;
+    }
+
+    .showcase h2 {
+      font-size: clamp(44px, 5vw, 80px);
+      line-height: .95;
+      margin-bottom: 24px;
+      letter-spacing: -3px;
+    }
+
+    .showcase p {
+      line-height: 1.8;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(10px);
+      padding: 18px 22px;
+      border-radius: 28px;
+      min-width: 180px;
+    }
+
+    .stat h3 {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .phones {
+      position: relative;
+      height: 640px;
+    }
+
+    .phone {
+      position: absolute;
+      width: 300px;
+      border-radius: 48px;
+      border: 4px solid black;
+      overflow: hidden;
+      background: white;
+    }
+
+    .phone-1 {
+      top: 20px;
+      left: 0;
+      transform: rotate(-10deg);
+    }
+
+    .phone-2 {
+      top: 120px;
+      right: 0;
+      transform: rotate(10deg);
+    }
+
+    .phone-top {
+      height: 200px;
+      background: var(--color-chartreuse-pop);
+    }
+
+    .phone-content {
+      padding: 24px;
+    }
+
+    .mini-link {
+      height: 54px;
+      background: #f2f2f2;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    /* =========================
+      CTA
+    ========================== */
+
+    .cta {
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-box {
+      background: var(--color-chartreuse-pop);
+      padding: 90px 30px;
+      border-radius: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta h2 {
+      font-size: clamp(40px, 6vw, 90px);
+      line-height: .95;
+      letter-spacing: -4px;
+      max-width: 1000px;
+      margin: auto auto 30px;
+    }
+
+    .cta p {
+      max-width: 760px;
+      margin: auto auto 34px;
+      line-height: 1.8;
+      font-size: 19px;
+    }
+
+    footer {
+      padding: 40px 0 60px;
+      text-align: center;
+    }
+
+    /* =========================
+      RESPONSIVE
+    ========================== */
+
+    @media (max-width: 1100px) {
+
+      .hero-grid,
+      .showcase-grid,
+      .feature-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero-visual {
-        height: 500px;
+      .hero-right {
+        height: 640px;
       }
+
+      .phones {
+        height: 800px;
+      }
+
+      .phone-2 {
+        top: 260px;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 768px) {
 
       .nav-links {
         display: none;
       }
 
-      .showcase-box {
-        padding: 2rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-title {
-        letter-spacing: -3px;
+      .hero h1 {
+        font-size: 62px;
       }
 
-      .showcase-title {
-        letter-spacing: -2px;
+      .profile-card {
+        inset: 20px;
       }
 
-      .floating-card {
-        position: relative;
-        inset: unset !important;
-        width: 100%;
-        margin-bottom: 1rem;
+      .showcase-grid {
+        padding: 40px 24px;
       }
 
-      .hero-visual {
-        height: auto;
+      .cta-box {
+        border-radius: 44px;
       }
 
-      .footer-inner {
-        flex-direction: column;
-      }
-
-      .footer-links {
-        gap: 2rem;
+      .feature-card {
+        border-radius: 40px;
       }
     }
 
   </style>
 </head>
-<body>
 
-  <div class="noise"></div>
+<body>
 
   <!-- NAVBAR -->
 
   <nav>
-    <div class="container nav-inner">
-      <div class="logo">KINETIC</div>
+    <div class="container nav-wrap">
+
+      <div class="logo">Linktr.</div>
 
       <div class="nav-links">
-        <a href="#">Tools</a>
-        <a href="#">Showcase</a>
+        <a href="#">Products</a>
+        <a href="#">Templates</a>
         <a href="#">Community</a>
-        <a href="#">Docs</a>
+        <a href="#">Resources</a>
+        <a href="#">Pricing</a>
       </div>
 
-      <a class="pill-btn">
-        Get Started
-      </a>
+      <div class="nav-actions">
+        <button class="btn btn-dark">Login</button>
+        <button class="btn btn-primary">Sign up free</button>
+      </div>
+
     </div>
   </nav>
 
   <!-- HERO -->
 
   <section class="hero">
+
     <div class="container hero-grid">
 
-      <div>
-        <div class="hero-subtitle">
-          High Performance Motion Platform
+      <div class="hero-left">
+
+        <div class="hero-tag">
+          ⚡ Digital playground for creators
         </div>
 
         <h1 class="hero-title">
-          Animate
-          <span>Anything</span>
+          One link.<br>
+          Infinite vibes.
         </h1>
 
-        <p class="hero-desc">
-          Build immersive digital experiences with cinematic interactions,
-          kinetic typography, and lightning-fast motion systems.
+        <p>
+          Build your colorful online universe with powerful links,
+          social content, creator tools, analytics, monetization,
+          music embeds, animated themes, digital storefronts,
+          community hubs, and everything your audience needs in one place.
         </p>
 
         <div class="hero-actions">
-          <a class="pill-btn">
-            Start Building
-          </a>
+          <button class="btn btn-primary">
+            Start for free
+          </button>
 
-          <a class="secondary-btn">
-            Explore Docs →
-          </a>
+          <button class="btn btn-dark">
+            Explore templates
+          </button>
         </div>
+
       </div>
 
-      <div class="hero-visual">
+      <div class="hero-right">
 
-        <div class="floating-card card-1">
-          <h3>Scroll</h3>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
 
-          <p>
-            Turn scrolling into silky-smooth storytelling experiences.
-          </p>
-        </div>
+        <div class="profile-card">
 
-        <div class="floating-card card-2">
-          <h3>Timeline</h3>
+          <div class="profile-top">
 
-          <p>
-            Orchestrate layered animations with precision sequencing.
-          </p>
-        </div>
+            <div class="avatar">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop" alt="">
+            </div>
 
-        <div class="floating-card card-3">
-          <h3>3D Motion</h3>
+          </div>
 
-          <p>
-            Create depth, perspective, and cinematic movement effortlessly.
-          </p>
+          <div class="profile-content">
+
+            <h3>@yourcreator</h3>
+
+            <p>
+              Creative developer • designer • digital artist
+            </p>
+
+            <div class="link-list">
+
+              <div class="link-card">
+                <span>🎵 Spotify Playlist</span>
+                <span>↗</span>
+              </div>
+
+              <div class="link-card">
+                <span>🎬 Watch New Reel</span>
+                <span>↗</span>
+              </div>
+
+              <div class="link-card">
+                <span>🛍 Shop Digital Assets</span>
+                <span>↗</span>
+              </div>
+
+              <div class="link-card">
+                <span>📸 Instagram</span>
+                <span>↗</span>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
     </div>
+
   </section>
 
   <!-- FEATURES -->
 
-  <section class="section">
+  <section>
+
     <div class="container">
 
-      <h2 class="section-heading">
-        Crafted for creators building
-        <span>next-generation experiences.</span>
-      </h2>
+      <div class="section-head">
 
-      <div class="features-grid">
+        <h2>
+          Designed to stand out everywhere.
+        </h2>
 
-        <div class="feature-card">
-          <div class="feature-number">01</div>
+        <p>
+          A playful visual system built with colorful sections,
+          giant rounded shapes, bold typography, vibrant interaction,
+          and creator-first experiences that feel alive.
+        </p>
 
-          <div class="feature-title">
-            Motion Engine
-          </div>
+      </div>
 
-          <div class="feature-desc">
-            Ultra-fast rendering optimized for modern web interfaces and
-            immersive storytelling.
-          </div>
+      <div class="feature-grid">
+
+        <div class="feature-card card-animate">
+
+          <div class="feature-icon">🚀</div>
+
+          <h3>
+            Instant creator pages
+          </h3>
+
+          <p>
+            Launch beautiful profile hubs with music embeds,
+            video highlights, social integrations, products,
+            donations, events, newsletters, and custom blocks.
+          </p>
+
+          <div class="feature-deco"></div>
+
         </div>
 
-        <div class="feature-card">
-          <div class="feature-number">02</div>
+        <div class="feature-card card-animate">
 
-          <div class="feature-title">
-            Scroll Systems
-          </div>
+          <div class="feature-icon">🎨</div>
 
-          <div class="feature-desc">
-            Build scroll-driven timelines, parallax sections, and kinetic
-            transitions.
-          </div>
+          <h3>
+            Unlimited customization
+          </h3>
+
+          <p>
+            Use gradients, stickers, animated buttons,
+            floating layers, colorful backgrounds,
+            rounded layouts, custom typography,
+            and dynamic motion interactions.
+          </p>
+
+          <div class="feature-deco"></div>
+
         </div>
 
-        <div class="feature-card">
-          <div class="feature-number">03</div>
+        <div class="feature-card card-animate">
 
-          <div class="feature-title">
-            Interactive UI
-          </div>
+          <div class="feature-icon">📈</div>
 
-          <div class="feature-desc">
-            Design interfaces that respond fluidly to movement, gestures,
-            and user intent.
-          </div>
-        </div>
+          <h3>
+            Smart analytics
+          </h3>
 
-        <div class="feature-card">
-          <div class="feature-number">04</div>
+          <p>
+            Understand your audience with click tracking,
+            engagement heatmaps, conversion funnels,
+            audience geography, device insights,
+            and creator growth tools.
+          </p>
 
-          <div class="feature-title">
-            Real-time Control
-          </div>
+          <div class="feature-deco"></div>
 
-          <div class="feature-desc">
-            Synchronize motion systems with dynamic content and live data.
-          </div>
         </div>
 
       </div>
 
     </div>
+
   </section>
 
   <!-- SHOWCASE -->
 
-  <section class="section showcase">
+  <section>
+
     <div class="container">
 
-      <div class="showcase-box">
+      <div class="showcase">
 
-        <div class="gradient-circle"></div>
+        <div class="showcase-grid">
 
-        <h2 class="showcase-title">
-          Create motion that
-          <span>feels alive.</span>
-        </h2>
+          <div>
+
+            <h2>
+              Grow your audience with style.
+            </h2>
+
+            <p>
+              Your personal digital hub should feel expressive,
+              energetic, and unforgettable. Linktr combines
+              creator tools, commerce, social integrations,
+              and beautiful visual systems into one experience.
+            </p>
+
+            <div class="stats">
+
+              <div class="stat">
+                <h3>98M+</h3>
+                <span>Creators</span>
+              </div>
+
+              <div class="stat">
+                <h3>12B+</h3>
+                <span>Monthly clicks</span>
+              </div>
+
+              <div class="stat">
+                <h3>190+</h3>
+                <span>Countries</span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="phones">
+
+            <div class="phone phone-1">
+
+              <div class="phone-top"></div>
+
+              <div class="phone-content">
+
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+
+              </div>
+
+            </div>
+
+            <div class="phone phone-2">
+
+              <div class="phone-top"
+                style="background: var(--color-lavender-mist)">
+              </div>
+
+              <div class="phone-content">
+
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+                <div class="mini-link"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- FOOTER -->
+  <!-- CTA -->
 
-  <footer>
-    <div class="container footer-inner">
+  <section class="cta">
 
-      <div class="footer-left">
-        <h2>KINETIC</h2>
+    <div class="container">
+
+      <div class="cta-box">
+
+        <h2>
+          Build your colorful internet identity today.
+        </h2>
 
         <p>
-          Powerful animation systems for modern creators,
-          developers, and digital storytellers.
+          Create a vibrant creator page with powerful links,
+          animated interactions, commerce tools,
+          social integrations, analytics, community features,
+          and a design system that feels playful and modern.
         </p>
-      </div>
 
-      <div class="footer-links">
-
-        <div class="footer-column">
-          <h4>Product</h4>
-          <a href="#">Features</a>
-          <a href="#">Docs</a>
-          <a href="#">Showcase</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Community</h4>
-          <a href="#">Discord</a>
-          <a href="#">Twitter</a>
-          <a href="#">GitHub</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="#">About</a>
-          <a href="#">Careers</a>
-          <a href="#">Contact</a>
-        </div>
+        <button class="btn btn-dark">
+          Create your page
+        </button>
 
       </div>
 
     </div>
+
+  </section>
+
+  <footer>
+    © 2026 Linktr Playground — Designed with vibrant energy.
   </footer>
 
-  <!-- JS -->
+  <!-- ANIMATION -->
 
   <script>
 
-    // Floating animation
-
-    const cards = document.querySelectorAll(".floating-card");
-
-    cards.forEach((card, index) => {
-
-      let offset = index * 0.8;
-
-      function animate() {
-
-        const y =
-          Math.sin(Date.now() * 0.001 + offset) * 12;
-
-        card.style.transform =
-          `translateY(${y}px)`;
-
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-
+    // HERO TITLE
+    anime({
+      targets: '.hero-title',
+      translateY: [80, 0],
+      opacity: [0, 1],
+      duration: 1400,
+      easing: 'easeOutExpo'
     });
 
-    // Mouse glow effect
+    anime({
+      targets: '.hero p, .hero-actions, .hero-tag',
+      translateY: [40, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(140),
+      duration: 1200,
+      easing: 'easeOutExpo'
+    });
 
-    const glow = document.createElement("div");
+    // FLOATING BLOBS
+    anime({
+      targets: '.blob-1',
+      translateY: [-20, 30],
+      duration: 4000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
 
-    glow.style.position = "fixed";
-    glow.style.width = "400px";
-    glow.style.height = "400px";
-    glow.style.borderRadius = "50%";
-    glow.style.pointerEvents = "none";
-    glow.style.background =
-      "radial-gradient(circle, rgba(10,228,72,0.12) 0%, rgba(10,228,72,0) 70%)";
+    anime({
+      targets: '.blob-2',
+      translateX: [-20, 30],
+      duration: 5000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
 
-    glow.style.transform = "translate(-50%, -50%)";
-    glow.style.zIndex = "0";
+    anime({
+      targets: '.blob-3',
+      scale: [.9, 1.1],
+      duration: 3000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutQuad'
+    });
 
-    document.body.appendChild(glow);
+    // FEATURE CARDS
+    anime({
+      targets: '.card-animate',
+      translateY: [100, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(180),
+      duration: 1200,
+      easing: 'easeOutExpo'
+    });
 
-    document.addEventListener("mousemove", (e) => {
+    // PHONE FLOAT
+    anime({
+      targets: '.phone-1',
+      translateY: [-10, 20],
+      rotate: [-10, -6],
+      duration: 4000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
 
-      glow.style.left = e.clientX + "px";
-      glow.style.top = e.clientY + "px";
+    anime({
+      targets: '.phone-2',
+      translateY: [10, -20],
+      rotate: [10, 6],
+      duration: 4000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
+
+    // BUTTON HOVER EFFECT
+    document.querySelectorAll('.btn').forEach(btn => {
+
+      btn.addEventListener('mouseenter', () => {
+
+        anime({
+          targets: btn,
+          scale: 1.05,
+          duration: 250,
+          easing: 'easeOutQuad'
+        });
+
+      });
+
+      btn.addEventListener('mouseleave', () => {
+
+        anime({
+          targets: btn,
+          scale: 1,
+          duration: 250,
+          easing: 'easeOutQuad'
+        });
+
+      });
 
     });
 
@@ -713,4 +1020,3 @@
 
 </body>
 </html>
-```
